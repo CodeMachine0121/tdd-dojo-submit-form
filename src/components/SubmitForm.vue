@@ -3,6 +3,8 @@
 </script>
 
 <template>
+  <p>User Name</p>
+  <input type="text" class="username-input">
 
 </template>
 
