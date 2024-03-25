@@ -23,5 +23,12 @@ describe('SubmitForm', () => {
         expect(wrapper.find('.password-repeat-input').exists()).toBe(true);
     });
 
+    it('should exist submit button with disable status', () => {
+        const submit = wrapper.find('.submit');
+        expect(submit.exists()).toBe(true);
+        expect(submit.text()).toBe('Sign Up');
+        expect((submit.element as HTMLButtonElement).disabled).toBe(true);
+    });
+
 
 })
