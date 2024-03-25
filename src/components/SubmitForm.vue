@@ -5,6 +5,8 @@
 <template>
   <p>User Name</p>
   <input type="text" class="username-input">
+  <p>Email</p>
+  <input type="email" class="email-input">
 
 </template>
 
