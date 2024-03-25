@@ -16,7 +16,11 @@ describe('SubmitForm', () => {
 
     it('should exist email inputs', () => {
         expect(wrapper.find('.email-input').exists()).toBe(true);
+    });
 
+    it('should exist password and repeat-password inputs', () => {
+        expect(wrapper.find('.password-input').exists()).toBe(true);
+        expect(wrapper.find('.password-repeat-input').exists()).toBe(true);
     });
 
 
