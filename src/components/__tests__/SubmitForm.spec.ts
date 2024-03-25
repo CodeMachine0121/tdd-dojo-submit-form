@@ -1,7 +1,8 @@
-import {describe, it, expect, beforeEach} from "vitest";
+import {describe, it, expect, beforeEach, vi} from "vitest";
 import SubmitForm from "../SubmitForm.vue";
 import {mount, VueWrapper} from "@vue/test-utils";
 import {Component, nextTick} from "vue";
+import axios from "axios";
 
 describe('SubmitForm', () => {
     let wrapper: VueWrapper<Component>;
@@ -40,6 +41,34 @@ describe('SubmitForm', () => {
         await nextTick();
 
         expect((submit.element as HTMLButtonElement).disabled).toBe(false);
+    });
+
+    it('should call axios when click submit button', async () => {
+
+        const fakeAxios = vi.spyOn(axios, 'post').mockImplementation(()=>{
+            return Promise.resolve({data: {message: "success"}});
+        })
+
+        const submit = wrapper.find('.submit');
+        const username = wrapper.find('.username-input');
+        const email = wrapper.find('.email-input');
+        const password = wrapper.find('.password-input');
+        const passwordRepeat = wrapper.find('.password-repeat-input');
+
+        await username.setValue("any-username")
+        await email.setValue("any-email")
+        await password.setValue("any-password")
+        await passwordRepeat.setValue("any-password")
+        await submit.trigger('click');
+        await nextTick();
+
+        expect(fakeAxios).toHaveBeenCalledWith('api/signup', {
+            username: "any-username",
+            email: "any-email",
+            password: "any-password",
+            passwordRepeat: "any-password"
+        })
+
     });
 
 
