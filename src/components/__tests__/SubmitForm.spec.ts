@@ -45,9 +45,9 @@ describe('SubmitForm', () => {
 
     it('should call axios when click submit button', async () => {
 
-        const fakeAxios = vi.spyOn(axios, 'post').mockImplementation(()=>{
+        const fakeAxios = vi.spyOn(axios, 'post').mockImplementation(() => {
             return Promise.resolve({data: {message: "success"}});
-        })
+        });
 
         const submit = wrapper.find('.submit');
         const username = wrapper.find('.username-input');
@@ -66,7 +66,6 @@ describe('SubmitForm', () => {
             username: "any-username",
             email: "any-email",
             password: "any-password",
-            passwordRepeat: "any-password"
         })
 
     });

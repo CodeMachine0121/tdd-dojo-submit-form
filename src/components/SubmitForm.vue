@@ -3,21 +3,19 @@
 import {computed, ref} from "vue";
 import axios from "axios";
 
-const usernameInput = ref('');
-const emailInput = ref('');
-const passwordInput = ref('');
-const passwordRepeatInput = ref('');
+const formBody = ref({
+  username: '',
+  email: '',
+  password: '',
+  passwordRepeat: ''
+});
 const isPasswordSame = computed(()=>{
-  return (passwordInput.value || passwordRepeatInput.value) ? (passwordInput.value === passwordRepeatInput.value) : false ;
+  return (formBody.value.password || formBody.value.passwordRepeat) ? (formBody.value.password === formBody.value.passwordRepeat) : false ;
 })
 
 const submitForm = () => {
-  axios.post("api/signup", {
-    username: usernameInput.value,
-    email: emailInput.value,
-    password: passwordInput.value,
-    passwordRepeat: passwordRepeatInput.value
-  });
+  const {passwordRepeat, ...body} = formBody.value;
+  axios.post("api/signup", body);
 }
 
 
@@ -25,13 +23,13 @@ const submitForm = () => {
 
 <template>
   <p>User Name</p>
-  <input type="text" v-model="usernameInput" class="username-input">
+  <input type="text" v-model="formBody.username" class="username-input">
   <p>Email</p>
-  <input type="email" v-model="emailInput" class="email-input">
+  <input type="email" v-model="formBody.email" class="email-input">
   <p>Password</p>
-  <input type="password" v-model="passwordInput" class="password-input">
+  <input type="password" v-model="formBody.password" class="password-input">
   <p>Password Repeat</p>
-  <input type="password" v-model="passwordRepeatInput" class="password-repeat-input">
+  <input type="password" v-model="formBody.passwordRepeat" class="password-repeat-input">
   <button type="button"  @click="submitForm" :disabled="!isPasswordSame"  class="submit">Sign Up</button>
 
 </template>
