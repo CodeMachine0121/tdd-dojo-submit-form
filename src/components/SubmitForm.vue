@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import {computed, ref} from "vue";
-import axios from "axios";
 
 const formBody = ref({
   username: '',
@@ -15,7 +14,16 @@ const isPasswordSame = computed(()=>{
 
 const submitForm = () => {
   const {passwordRepeat, ...body} = formBody.value;
-  axios.post("api/signup", body);
+  // axios.post("api/signup", body);
+
+  fetch("api/signup", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+
+  })
 }
 
 

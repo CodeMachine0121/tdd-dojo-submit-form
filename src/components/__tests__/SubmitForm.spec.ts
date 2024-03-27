@@ -2,7 +2,6 @@ import {describe, it, expect, beforeEach, vi} from "vitest";
 import SubmitForm from "../SubmitForm.vue";
 import {mount, VueWrapper} from "@vue/test-utils";
 import {Component, nextTick} from "vue";
-import axios from "axios";
 
 describe('SubmitForm', () => {
     let wrapper: VueWrapper<Component>;
@@ -45,9 +44,8 @@ describe('SubmitForm', () => {
 
     it('should call axios when click submit button', async () => {
 
-        const fakeAxios = vi.spyOn(axios, 'post').mockImplementation(() => {
-            return Promise.resolve({data: {message: "success"}});
-        });
+        const fakeFetch = vi.fn();
+        window.fetch = fakeFetch;
 
         const submit = wrapper.find('.submit');
         const username = wrapper.find('.username-input');
@@ -62,12 +60,17 @@ describe('SubmitForm', () => {
         await submit.trigger('click');
         await nextTick();
 
-        expect(fakeAxios).toHaveBeenCalledWith('api/signup', {
-            username: "any-username",
-            email: "any-email",
-            password: "any-password",
-        })
-
+        expect(fakeFetch).toHaveBeenCalledWith("api/signup", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: "any-username",
+                    email: "any-email",
+                    password: "any-password",
+                })
+        });
     });
 
 
